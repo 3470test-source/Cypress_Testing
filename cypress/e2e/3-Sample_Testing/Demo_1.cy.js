@@ -2,7 +2,6 @@
 describe("Demo testing",()=>{
     it("To launch the url",()=>{
        cy.visit('https://demoqa.com/')
-     
     })
 
     it("To check the forms",()=>{
@@ -25,6 +24,14 @@ describe("Demo testing",()=>{
        cy.wait(1000)
        cy.get('a[href="/checkbox"]').click()
        cy.get('.rc-tree-switcher').click()
+       cy.get('.rc-tree-switcher').eq(1).click()
+       cy.get('[role="checkbox"][aria-label="Select Home"]').check()
     })
 
 })
+
+
+
+
+
+
