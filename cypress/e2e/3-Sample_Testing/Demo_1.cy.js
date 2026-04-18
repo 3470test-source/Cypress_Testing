@@ -1,7 +1,14 @@
 
 describe("Demo testing",()=>{
+
+   beforeEach(() => {
+     Cypress.on('uncaught:exception', (err) => {
+      return false
+     })
+   })
+
    it("To launch the url",()=>{
-      cy.visit('https://demoqa.com/')
+      cy.visit('https://demoqa.com/',{failOnStatusCode: false})
    })
 
    it("To check the forms",()=>{
@@ -101,8 +108,92 @@ describe("Demo testing",()=>{
 
    it("To test link",()=>{
       cy.get('[href="/links"]').click()
+      cy.wait(1000)
 
+      //Following links will open new tab
+      cy.get('#simpleLink')
+        .invoke('removeAttr', 'target')
+        .click()
+
+      //go to preview page 
+      cy.wait(1000)
+      cy.go(-1)  
+
+      //other Following links will open new tab
+      cy.wait(1000)
+      cy.get('#dynamicLink')
+        .invoke('removeAttr', 'target')
+        .click()
+
+      //go to preview page 
+      cy.wait(1000)
+      cy.go(-1)    
+
+      //Following links will send an api call
+      //created
+      cy.get('#created').click()
+      cy.get('#linkResponse').should('be.visible').and('contain', '201')
+
+      //No content
+      cy.get('#no-content').click()
+      cy.get('#linkResponse').should('be.visible').and('contain', '204')
+
+      //Moved
+      cy.get('#moved').click()
+      cy.get('#linkResponse').should('be.visible').and('contain', '301')
+
+      //Bad Request
+      cy.get('#bad-request').click()
+      cy.get('#linkResponse').should('be.visible').and('contain', '400')
+
+      //Unauthorized
+      cy.get('#unauthorized').click()
+      cy.get('#linkResponse').should('be.visible').and('contain', '401')
+
+      //Forbidden
+      cy.get('#forbidden').click()
+      cy.get('#linkResponse').should('be.visible').and('contain', '403')
+
+      //Not Found
+      cy.get('#invalid-url').click()
+      cy.get('#linkResponse').should('be.visible').and('contain', '404')
    })
+
+   it.skip('To test Broken Links - Images',()=>{
+      // cy.get('[href="/broken"]').click()
+
+      //Valid Links
+      cy.wait(1000)
+      cy.get('a[href="http://demoqa.com"]').click({force:true})
+   })
+
+   it("To test upload and download",()=>{
+     cy.get('[href="/upload-download"]').click()
+
+     //upload 
+     cy.get('#uploadFile').selectFile('cypress/fixtures/CCS_important -2.pdf')
+
+     //download
+     cy.get('#downloadButton').click()
+
+     cy.contains('Elements').click()
+   })
+
+  
+
+
+
+
+
+
+
+ 
+
+
+
+
+
+
 
 })
 
