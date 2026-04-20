@@ -14,6 +14,7 @@ describe("Demo testing",()=>{
    it("To check the forms",()=>{
       cy.wait(1000)
       cy.contains('Forms').click() 
+      cy.wait(1000)
       cy.contains('Elements').click()
       cy.get('[href="/text-box"]').click()
    })
@@ -179,15 +180,102 @@ describe("Demo testing",()=>{
      cy.contains('Elements').click()
    })
 
-  
+   it("To test Forms filed",()=>{
+     cy.contains('Forms').click()
 
+     //practice form
+     cy.get('a[href="/automation-practice-form"]').click()
 
+     //Student Registration Form
+     cy.get('[placeholder="First Name"]').type('Vignesh')
+     cy.get('[placeholder="Last Name"]').type('balaji')
+     cy.get('[placeholder="name@example.com"]').type('vigneshbalaji2643@gmail.com')
+     
+     //Gender
+     cy.get('[value="Male"]').click()
+     cy.get('[value="Female"]').click()
+     cy.get('[value="Other"]').click()
 
+     cy.get('[placeholder="Mobile Number"]').type('6379103189')
 
+     //Date picker
+     cy.get('#dateOfBirthInput').click()
+     //Month
+     cy.get('[class="react-datepicker__month-select"]').select('November')
+     //Year
+     cy.get('[class="react-datepicker__year-select"]').select('2026')
+     //Day
+     cy.get('[role="gridcell"]').contains('20').click()
+     //cy.contains('[role="gridcell"]', '18').click()
 
+     //cy.get('#subjectsInput').type('Computer')
+     //cy.contains('Computer Science').click()
+     //cy.get('#subjectsInput').type('ch')
+     //cy.contains('Chemistry').click()
 
+   const subjects = ['Computer Science', 'Chemistry','Accounting']
 
+     subjects.forEach((subject) => {
+      cy.get('#subjectsInput').type(subject.substring(0, 2))
+      cy.contains(subject).click()
+   })
+
+     //Hobbies Check box
+     cy.wait(1000)
+     cy.get('#hobbies-checkbox-1').check()
+     cy.get('#hobbies-checkbox-2').check()
+     cy.get('#hobbies-checkbox-3').check()
+
+     //Uncheck box
+     cy.wait(1000)
+     cy.get('#hobbies-checkbox-1').uncheck()
+     cy.get('#hobbies-checkbox-2').uncheck()
+     cy.get('#hobbies-checkbox-3').uncheck()
+
+     cy.wait(1000)
+     cy.get('#hobbies-checkbox-1').check()
+
+     //upload the picture
+     cy.get('#uploadPicture').selectFile('cypress/fixtures/100 percentage score.jpeg')
+
+     //Address
+     cy.get('[placeholder="Current Address"]').type('No: 2/191 NKS Nagar, {enter}Anna Street Karapakkam (OMR), {enter}Chennai-600097.')
+
+     //State and City
+     cy.contains('Select State').click({force:true})
+     cy.contains('NCR').click()
+
+     cy.get('#city').click()
+     cy.contains('Delhi').click()
+
+     //submit button
+     cy.get('#submit').click()
+
+     cy.get('#example-modal-sizes-title-lg').should('be.visible').and('contain','Thanks for submitting the form')
+
+     cy.wait(1000)
+     cy.get('body').type('{esc}')
+   })
+
+   it("To test alerts , Frame & Windows",()=>{
+      cy.contains('Alerts, Frame & Windows').click()
+
+      //browser windows
+      cy.get('[href="/browser-windows"]').click()
  
+      //Alerts
+      cy.get('[href="/alerts"]').click()
+
+      //On button click, prompt box will appear
+      cy.window().then((win) => {
+       cy.stub(win, 'prompt').returns('Vignesh')
+      })
+
+      cy.get('#promtButton').click()
+   })
+
+
+
 
 
 
